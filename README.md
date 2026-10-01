@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# E-Commerce Dashboard (Next.js App Router & TypeScript)
 
-## Getting Started
+A production-ready, accessible e-commerce application built with Next.js (App Router), React 19, strict TypeScript, and Tailwind CSS. Powered by the [Fake Store API](https://fakestoreapi.com).
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Server-Side Data Fetching**: Utilizes Next.js Server Components for initial product data fetching and server-side sorting (`GET /products?sort=asc|desc`).
+- **Interactive Client Filtering**: Case-insensitive title/description search, category filtering, and validated price range controls.
+- **Dynamic URL Synchronization**: Synchronizes category, sort, search, price, and pagination state with URL search parameters for shareable links and seamless browser navigation.
+- **Persistent Shopping Cart**: Implemented using React Context API & `useReducer` with `localStorage` sync and SSR hydration protection.
+- **Product Details & SEO**: Dynamic metadata generation (`generateMetadata`), OpenGraph tags, and Schema.org `JSON-LD` Product structured data.
+- **Authentication**: Integrated authentication flow using FakeStore API (`POST /auth/login`) with persistent session management.
+- **Accessibility & UX**: Built with semantic HTML5, accessible keyboard focus rings, skeleton loaders to prevent layout shifts (CLS), and error boundaries.
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript (Strict Mode)
+- **UI Library**: React 19
+- **Styling**: Tailwind CSS v4
+- **HTTP Client**: Native Fetch API (Zero external HTTP dependencies)
+- **State Management**: React Context API + `useReducer`
+
+---
+
+## 📁 Project Architecture
+
+```
+src/
+├── app/                      # Next.js App Router pages & metadata
+│   ├── cart/                 # Shopping cart route
+│   ├── login/                # Authentication page
+│   └── products/             # Product catalog & dynamic details [id]
+├── components/               # UI Components
+│   ├── cart/                 # Cart list, summary & item rows
+│   ├── common/               # Navbar, Footer, StarRating, Pagination, Skeletons
+│   └── products/             # Product card, grid, filters, client view
+├── context/                  # State management (Cart, Auth, Toast)
+├── lib/
+│   └── api/client.ts         # Centralized native fetch client with error handling
+├── services/                 # API domain service abstractions
+└── types/                    # Strongly typed interfaces (Product, Cart, Auth)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Architecture & Design Decisions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Centralized Fetch Abstraction (`apiClient`)**:
+   - Custom `ApiError` class extending native `Error` to normalize HTTP status codes, network errors, and JSON responses.
+   - Built-in request timeout support via `AbortController` and Next.js revalidation options.
 
-## Learn More
+2. **Server vs. Client Boundaries**:
+   - Data fetching and sorting are handled on the server to keep JavaScript bundle sizes minimal.
+   - Client components (`ProductClientView`) are scoped strictly to interactive user controls (filtering, search inputs, pagination slice).
 
-To learn more about Next.js, take a look at the following resources:
+3. **Hydration Protection**:
+   - To prevent React hydration mismatches when reading `localStorage` for cart and auth state, state initialization is safely guarded until post-mount hydration.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Local Development Setup
 
-## Deploy on Vercel
+### Prerequisites
+- Node.js 18.x or higher
+- npm 9.x or higher
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# Install project dependencies
+npm install
+
+# Run the local development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+### Building & Linting
+
+```bash
+# Run ESLint validation
+npm run lint
+
+# Create production build and run TypeScript checks
+npm run build
+
+# Start production server
+npm run start
+```
+
+---
+
+## 📝 API Limitations & Trade-offs
+
+- **Pagination**: FakeStore API does not provide native limit/offset parameters combined with sorting or category filters. To maintain a realistic e-commerce experience, the server fetches the dataset and pagination is sliced cleanly across the received data on the client.
+- **Authentication**: FakeStore API authentication returns a static JWT token for demo credentials (`mor_2314` / `83r5^_`). Session management is isolated from product and cart state.
