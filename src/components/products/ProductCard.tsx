@@ -51,7 +51,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         <Image
           src={
             imgError || !product.image
-              ? 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg'
+              ? '/placeholder-product.svg'
               : product.image
           }
           alt={product.title}
