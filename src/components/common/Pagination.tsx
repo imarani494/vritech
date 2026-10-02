@@ -22,7 +22,6 @@ export const Pagination: React.FC<PaginationProps> = ({
   const startItem = (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
-  // Generate list of page numbers to render
   const getPageNumbers = (): (number | string)[] => {
     const pages: (number | string)[] = [];
     const maxVisible = 5;
@@ -69,7 +68,6 @@ export const Pagination: React.FC<PaginationProps> = ({
       </div>
 
       <div className="flex items-center gap-1.5">
-        {/* Previous Button */}
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
@@ -82,7 +80,6 @@ export const Pagination: React.FC<PaginationProps> = ({
           Previous
         </button>
 
-        {/* Page Number Buttons */}
         <div className="hidden sm:flex items-center gap-1">
           {pages.map((p, index) => {
             if (p === '...') {
@@ -114,7 +111,6 @@ export const Pagination: React.FC<PaginationProps> = ({
           })}
         </div>
 
-        {/* Next Button */}
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}

@@ -2,10 +2,6 @@ import { ApiError, RequestOptions } from '@/types/api';
 
 const BASE_URL = 'https://fakestoreapi.com';
 
-/**
- * Reusable native fetch wrapper with consistent HTTP error handling,
- * typed responses, timeout support, query parameters formatting, and Next.js ISR/SSR cache support.
- */
 export async function apiClient<T>(
   endpoint: string,
   options: RequestOptions = {}
@@ -19,7 +15,6 @@ export async function apiClient<T>(
     ...customInit
   } = options;
 
-  // Format query parameters
   const searchParams = new URLSearchParams();
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
@@ -39,13 +34,11 @@ export async function apiClient<T>(
     ...((customHeaders as Record<string, string>) || {}),
   };
 
-  // Configure Next.js fetch options for ISR/caching if passed
   const nextConfig: { next?: { revalidate?: number | false } } = {};
   if (revalidate !== undefined) {
     nextConfig.next = { revalidate };
   }
 
-  // AbortController for request timeout handling
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -60,7 +53,6 @@ export async function apiClient<T>(
 
     clearTimeout(timeoutId);
 
-    // Safely parse JSON response body
     let data: unknown;
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {

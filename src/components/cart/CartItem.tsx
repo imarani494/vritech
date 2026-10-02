@@ -33,7 +33,6 @@ export const CartItem: React.FC<CartItemProps> = ({
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 sm:p-5 bg-white rounded-2xl border border-slate-200/80 shadow-sm transition-all hover:border-slate-300">
-      {/* Product Image & Info */}
       <div className="flex items-center gap-4 flex-1 min-w-0">
         <Link
           href={`/products/${product.id}`}
@@ -68,9 +67,7 @@ export const CartItem: React.FC<CartItemProps> = ({
         </div>
       </div>
 
-      {/* Quantity & Subtotal Action Section */}
       <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-        {/* Quantity Controls */}
         <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
           <button
             onClick={() => onUpdateQuantity(product.id, quantity - 1)}
@@ -89,13 +86,11 @@ export const CartItem: React.FC<CartItemProps> = ({
           </button>
         </div>
 
-        {/* Item Subtotal Price */}
         <div className="text-right min-w-[80px]">
           <span className="text-xs text-slate-400 block font-medium">Subtotal</span>
           <span className="text-base font-extrabold text-slate-900">{formattedSubtotal}</span>
         </div>
 
-        {/* Remove Button */}
         <button
           onClick={() => onRemove(product.id)}
           aria-label={`Remove ${product.title} from cart`}

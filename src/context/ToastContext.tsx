@@ -35,7 +35,6 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const newToast: ToastMessage = { id, title, message, type };
       setToasts((prev) => [...prev, newToast]);
 
-      // Auto dismiss after 3.5 seconds
       setTimeout(() => {
         removeToast(id);
       }, 3500);
@@ -46,7 +45,6 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   return (
     <ToastContext.Provider value={{ toasts, showToast, removeToast }}>
       {children}
-      {/* Toast Render Container */}
       <div
         aria-live="polite"
         aria-atomic="true"

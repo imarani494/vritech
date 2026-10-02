@@ -43,7 +43,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
 
   return (
     <article className="group bg-white rounded-2xl border border-slate-200/80 hover:border-indigo-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full overflow-hidden">
-      {/* Product Image Link Container */}
       <Link
         href={`/products/${product.id}`}
         className="relative w-full pt-[85%] bg-slate-50/80 overflow-hidden flex items-center justify-center p-6 border-b border-slate-100"
@@ -69,28 +68,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         </div>
       </Link>
 
-      {/* Card Content Body */}
       <div className="p-5 flex flex-col flex-1">
-        {/* Title */}
         <h3 className="font-semibold text-slate-900 text-base leading-snug line-clamp-2 mb-2 group-hover:text-indigo-600 transition-colors">
           <Link href={`/products/${product.id}`} className="focus:outline-none focus:underline">
             {product.title}
           </Link>
         </h3>
 
-        {/* Rating */}
         {product.rating && (
           <div className="mb-3">
             <StarRating rate={product.rating.rate} count={product.rating.count} size="sm" />
           </div>
         )}
 
-        {/* Description Snippet */}
         <p className="text-slate-500 text-xs line-clamp-2 mb-4 leading-relaxed">
           {product.description}
         </p>
 
-        {/* Card Footer: Price & Add to Cart Action */}
         <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
           <div className="flex flex-col">
             <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">

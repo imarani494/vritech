@@ -1,16 +1,21 @@
 import Link from 'next/link';
 import { productService } from '@/services/productService';
 import { ProductCard } from '@/components/products/ProductCard';
+import { Product } from '@/types/product';
 
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const products = await productService.getProducts();
+  let products: Product[] = [];
+  try {
+    products = await productService.getProducts();
+  } catch (error) {
+    console.error('[HomePage] Error fetching products:', error);
+  }
   const featuredProducts = products.slice(0, 4);
 
   return (
     <div className="space-y-16 pb-16">
-      {/* Hero Banner Section */}
       <section className="relative overflow-hidden bg-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:16px_16px]" />
         <div className="relative max-w-7xl mx-auto flex flex-col items-center text-center space-y-6">
@@ -46,7 +51,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Categories Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -82,7 +86,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Top Featured Products */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <div>

@@ -24,7 +24,6 @@ export const Navbar: React.FC = () => {
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Brand Logo */}
           <div className="flex items-center gap-8">
             <Link
               href="/products"
@@ -40,7 +39,6 @@ export const Navbar: React.FC = () => {
               </span>
             </Link>
 
-            {/* Desktop Navigation Links */}
             <nav className="hidden md:flex items-center gap-1" aria-label="Main Navigation">
               <Link
                 href="/products"
@@ -65,9 +63,7 @@ export const Navbar: React.FC = () => {
             </nav>
           </div>
 
-          {/* Right Action Icons */}
           <div className="flex items-center gap-3">
-            {/* Shopping Cart Button */}
             <Link
               href="/cart"
               className="relative p-2.5 text-slate-700 hover:text-indigo-600 hover:bg-slate-100 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -94,7 +90,6 @@ export const Navbar: React.FC = () => {
               )}
             </Link>
 
-            {/* Auth Dropdown / Login Button */}
             {isAuthenticated && user ? (
               <div className="relative">
                 <button
@@ -141,7 +136,6 @@ export const Navbar: React.FC = () => {
               </Link>
             )}
 
-            {/* Mobile menu trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors"
@@ -159,7 +153,6 @@ export const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile drawer navigation */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-2">
           <Link

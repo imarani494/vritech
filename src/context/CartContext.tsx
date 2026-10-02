@@ -79,14 +79,12 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  // Initialize cart from localStorage after mount to prevent hydration mismatch
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          // Validate valid CartItem structure
           const validItems: CartItem[] = parsed.filter(
             (item: unknown) =>
               item &&
@@ -107,7 +105,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     dispatch({ type: 'INITIALIZE_CART', payload: { items: [] } });
   }, []);
 
-  // Save cart to localStorage whenever items update (only after initial hydration)
   useEffect(() => {
     if (!state.isHydrated) return;
     try {
@@ -117,7 +114,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [state.items, state.isHydrated]);
 
-  // Derived state calculations
   const totalItems = useMemo(() => {
     return state.items.reduce((sum, item) => sum + item.quantity, 0);
   }, [state.items]);
@@ -127,7 +123,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [state.items]);
 
   const tax = useMemo(() => {
-    return subtotal * 0.08; // 8% estimated tax
+    return subtotal * 0.08;
   }, [subtotal]);
 
   const shipping = useMemo(() => {

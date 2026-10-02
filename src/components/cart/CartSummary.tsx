@@ -54,7 +54,6 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
         Order Summary
       </h3>
 
-      {/* Line Item Breakdown */}
       <div className="space-y-3 text-sm text-slate-600">
         <div className="flex justify-between">
           <span>Subtotal</span>
@@ -84,7 +83,6 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
           </div>
         )}
 
-        {/* Free Shipping Progress Indicator */}
         {subtotal > 0 && subtotal < 50 && (
           <div className="pt-2">
             <div className="flex justify-between text-xs font-semibold mb-1">
@@ -101,7 +99,6 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
         )}
       </div>
 
-      {/* Promo Code Form */}
       <form onSubmit={handleApplyPromo} className="pt-2 flex gap-2">
         <input
           type="text"
@@ -118,13 +115,11 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
         </button>
       </form>
 
-      {/* Grand Total */}
       <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
         <span className="text-base font-bold text-slate-900">Total</span>
         <span className="text-2xl font-black text-indigo-600">{formatPrice(finalTotal)}</span>
       </div>
 
-      {/* Action Buttons */}
       <div className="space-y-3 pt-2">
         <button
           onClick={handleCheckout}

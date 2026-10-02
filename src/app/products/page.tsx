@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { productService } from '@/services/productService';
-import { SortOrder } from '@/types/product';
+import { Product, SortOrder } from '@/types/product';
 import { ProductClientView } from '@/components/products/ProductClientView';
 
 export const metadata: Metadata = {
@@ -20,15 +20,20 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const sortParam = resolvedSearchParams.sort;
   const sort: SortOrder = sortParam === 'desc' ? 'desc' : 'asc';
 
-  // Parallel server data fetching (unhandled errors trigger products/error.tsx boundary)
-  const [products, categories] = await Promise.all([
-    productService.getProducts(sort),
-    productService.getCategories(),
-  ]);
+  let products: Product[] = [];
+  let categories: string[] = [];
+
+  try {
+    [products, categories] = await Promise.all([
+      productService.getProducts(sort),
+      productService.getCategories(),
+    ]);
+  } catch (error) {
+    console.error('[ProductsPage] Error loading products catalog:', error);
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Page Title Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
           Products Catalog
@@ -38,7 +43,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </p>
       </div>
 
-      {/* Client Interactive Filtering View Shell */}
       <ProductClientView
         initialProducts={products}
         categories={categories}

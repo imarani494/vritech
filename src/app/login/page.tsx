@@ -118,7 +118,6 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Demo Credentials Quick Buttons */}
         <div className="pt-4 border-t border-slate-100">
           <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 text-center">
             Demo FakeStore Credentials

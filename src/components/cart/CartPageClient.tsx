@@ -65,7 +65,6 @@ export const CartPageClient: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Cart Item List */}
         <div className="lg:col-span-2">
           <CartList
             items={state.items}
@@ -74,7 +73,6 @@ export const CartPageClient: React.FC = () => {
           />
         </div>
 
-        {/* Order Summary Side Container */}
         <div className="lg:col-span-1 lg:sticky lg:top-24">
           <CartSummary
             subtotal={subtotal}

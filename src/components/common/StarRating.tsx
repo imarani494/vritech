@@ -26,7 +26,6 @@ export const StarRating: React.FC<StarRatingProps> = ({
   return (
     <div className="flex items-center gap-1.5" aria-label={`Rating ${rate} out of 5 stars`}>
       <div className="flex items-center text-amber-400">
-        {/* Full Stars */}
         {Array.from({ length: fullStars }).map((_, i) => (
           <svg
             key={`full-${i}`}
@@ -37,7 +36,6 @@ export const StarRating: React.FC<StarRatingProps> = ({
           </svg>
         ))}
 
-        {/* Half Star */}
         {hasHalfStar && (
           <div className="relative">
             <svg className={`${sizeClasses[size]} text-slate-300 fill-current`} viewBox="0 0 20 20">
@@ -51,7 +49,6 @@ export const StarRating: React.FC<StarRatingProps> = ({
           </div>
         )}
 
-        {/* Empty Stars */}
         {Array.from({ length: emptyStars }).map((_, i) => (
           <svg
             key={`empty-${i}`}

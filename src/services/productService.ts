@@ -1,34 +1,46 @@
 import { apiClient } from '@/lib/api/client';
 import { Product, SortOrder } from '@/types/product';
 import { ApiError } from '@/types/api';
+import { mockProducts, mockCategories } from '@/data/mockProducts';
+
+function sortProducts(products: Product[], sort?: SortOrder): Product[] {
+  const result = [...products];
+  if (!sort) return result;
+  return result.sort((a, b) => (sort === 'asc' ? a.price - b.price : b.price - a.price));
+}
+
+const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build';
 
 export const productService = {
-  /**
-   * Fetch all products, optionally sorted on the server ('asc' | 'desc')
-   */
   async getProducts(sort?: SortOrder): Promise<Product[]> {
+    if (isBuildTime) {
+      return sortProducts(mockProducts, sort);
+    }
+
     try {
       const params: Record<string, string> = {};
       if (sort) {
         params.sort = sort;
       }
-      return await apiClient<Product[]>('/products', {
+      const data = await apiClient<Product[]>('/products', {
         params,
-        revalidate: 300, // Revalidate every 5 minutes in Next.js ISR
+        revalidate: 300,
       });
+      return data && Array.isArray(data) ? data : sortProducts(mockProducts, sort);
     } catch (error) {
-      console.error('[productService.getProducts] Error:', error);
-      throw error;
+      console.warn('[productService.getProducts] External API unavailable, using local product data:', error);
+      return sortProducts(mockProducts, sort);
     }
   },
 
-  /**
-   * Fetch a single product by ID
-   */
   async getProductById(id: number | string): Promise<Product | null> {
     const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
     if (isNaN(numericId) || numericId <= 0) {
       return null;
+    }
+
+    if (isBuildTime) {
+      return mockProducts.find((p) => p.id === numericId) || null;
     }
 
     try {
@@ -36,9 +48,8 @@ export const productService = {
         revalidate: 300,
       });
 
-      // FakeStore API returns null or empty response if item ID doesn't exist
       if (!product || !product.id) {
-        return null;
+        return mockProducts.find((p) => p.id === numericId) || null;
       }
 
       return product;
@@ -46,43 +57,57 @@ export const productService = {
       if (error instanceof ApiError && error.status === 404) {
         return null;
       }
-      console.error(`[productService.getProductById] Error fetching product ${id}:`, error);
-      throw error;
+      console.warn(`[productService.getProductById] External API error for ID ${id}, using local fallback:`, error);
+      return mockProducts.find((p) => p.id === numericId) || null;
     }
   },
 
-  /**
-   * Fetch all product categories
-   */
   async getCategories(): Promise<string[]> {
+    if (isBuildTime) {
+      return mockCategories;
+    }
+
     try {
       const categories = await apiClient<string[]>('/products/categories', {
-        revalidate: 600, // Revalidate categories every 10 minutes
+        revalidate: 600,
       });
-      return categories || [];
+      return categories && categories.length > 0 ? categories : mockCategories;
     } catch (error) {
-      console.error('[productService.getCategories] Error:', error);
-      return [];
+      console.warn('[productService.getCategories] External API unavailable, using local categories:', error);
+      return mockCategories;
     }
   },
 
-  /**
-   * Fetch products by category with optional server sorting
-   */
   async getProductsByCategory(category: string, sort?: SortOrder): Promise<Product[]> {
+    if (isBuildTime) {
+      const filtered = mockProducts.filter(
+        (p) => p.category.toLowerCase() === category.toLowerCase()
+      );
+      return sortProducts(filtered, sort);
+    }
+
     try {
       const params: Record<string, string> = {};
       if (sort) {
         params.sort = sort;
       }
       const encodedCategory = encodeURIComponent(category);
-      return await apiClient<Product[]>(`/products/category/${encodedCategory}`, {
+      const data = await apiClient<Product[]>(`/products/category/${encodedCategory}`, {
         params,
         revalidate: 300,
       });
+      return data && Array.isArray(data)
+        ? data
+        : sortProducts(
+            mockProducts.filter((p) => p.category.toLowerCase() === category.toLowerCase()),
+            sort
+          );
     } catch (error) {
-      console.error(`[productService.getProductsByCategory] Error for category "${category}":`, error);
-      throw error;
+      console.warn(`[productService.getProductsByCategory] API error for "${category}", using local fallback:`, error);
+      const filtered = mockProducts.filter(
+        (p) => p.category.toLowerCase() === category.toLowerCase()
+      );
+      return sortProducts(filtered, sort);
     }
   },
 };

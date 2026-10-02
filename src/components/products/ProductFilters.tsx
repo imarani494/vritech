@@ -26,9 +26,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm mb-8 space-y-5">
-      {/* Top Bar: Search + Server Sort + Results Count */}
       <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-        {/* Search Bar Input */}
         <div className="relative flex-1">
           <label htmlFor="product-search-input" className="sr-only">
             Search products by name or description
@@ -57,9 +55,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           )}
         </div>
 
-        {/* Controls Right Group: Server Sort & Categories */}
         <div className="flex flex-wrap items-center gap-3">
-          {/* Category Dropdown */}
           <div className="relative">
             <label htmlFor="category-select-dropdown" className="sr-only">
               Filter by Category
@@ -79,7 +75,6 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             </select>
           </div>
 
-          {/* Server Sort Dropdown */}
           <div className="relative">
             <label htmlFor="sort-select-dropdown" className="sr-only">
               Sort Order
@@ -97,9 +92,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
         </div>
       </div>
 
-      {/* Second Row: Price Range Filter & Active Badges */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-slate-100">
-        {/* Price Range Inputs */}
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
             Price Range ($):
@@ -127,13 +120,11 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           </div>
         </div>
 
-        {/* Results Badge */}
         <div className="text-xs font-semibold text-slate-500">
           Showing <span className="text-indigo-600 font-bold">{totalResults}</span> products
         </div>
       </div>
 
-      {/* Active Filter Chips / Clear All */}
       {hasActiveFilters && (
         <div className="flex items-center gap-2 flex-wrap pt-3 border-t border-slate-100">
           <span className="text-xs text-slate-400 font-medium">Active filters:</span>

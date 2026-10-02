@@ -19,7 +19,6 @@ export class ApiError extends Error {
     this.data = options.data;
     this.isNetworkError = options.isNetworkError ?? false;
 
-    // Maintain proper prototype chain
     Object.setPrototypeOf(this, ApiError.prototype);
   }
 }

@@ -12,7 +12,13 @@ interface ProductDetailPageProps {
 
 export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const product = await productService.getProductById(resolvedParams.id);
+  let product = null;
+
+  try {
+    product = await productService.getProductById(resolvedParams.id);
+  } catch (error) {
+    console.error(`[generateMetadata] Error fetching product ${resolvedParams.id}:`, error);
+  }
 
   if (!product) {
     return {
@@ -34,13 +40,18 @@ export async function generateMetadata({ params }: ProductDetailPageProps): Prom
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const resolvedParams = await params;
-  const product = await productService.getProductById(resolvedParams.id);
+  let product = null;
+
+  try {
+    product = await productService.getProductById(resolvedParams.id);
+  } catch (error) {
+    console.error(`[ProductDetailPage] Error fetching product ${resolvedParams.id}:`, error);
+  }
 
   if (!product) {
     notFound();
   }
 
-  // Schema.org JSON-LD Structured Data for Product SEO
   const jsonLd = {
     '@context': 'https://schema.org/',
     '@type': 'Product',

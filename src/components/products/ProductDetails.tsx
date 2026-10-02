@@ -46,7 +46,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Back to Products Link */}
       <Link
         href="/products"
         className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-indigo-600 mb-8 transition-colors group"
@@ -63,7 +62,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-sm">
-        {/* Left Column: Product Image Gallery */}
         <div className="relative w-full aspect-square bg-slate-50/80 rounded-2xl p-8 border border-slate-100 flex items-center justify-center overflow-hidden">
           <Image
             src={
@@ -83,10 +81,8 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           </div>
         </div>
 
-        {/* Right Column: Product Specs & Purchase Options */}
         <div className="flex flex-col h-full justify-between space-y-6">
           <div>
-            {/* Category & Title */}
             <div className="mb-2">
               <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest">
                 {product.category}
@@ -96,7 +92,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               {product.title}
             </h1>
 
-            {/* Rating */}
             {product.rating && (
               <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-100">
                 <StarRating rate={product.rating.rate} count={product.rating.count} size="lg" />
@@ -106,7 +101,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               </div>
             )}
 
-            {/* Price Tag */}
             <div className="mb-6">
               <span className="text-3xl font-black text-slate-900 tracking-tight">
                 {formattedPrice}
@@ -114,7 +108,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               <span className="text-xs text-slate-400 ml-2">Includes taxes</span>
             </div>
 
-            {/* Description */}
             <div className="mb-8">
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
                 Description
@@ -125,10 +118,8 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </div>
           </div>
 
-          {/* Quantity Selector & Add to Cart Action */}
           <div className="pt-6 border-t border-slate-100 space-y-6">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              {/* Quantity Counter Controls */}
               <div className="flex items-center justify-between sm:justify-start gap-1 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
                 <button
                   onClick={() => handleQuantityChange(quantity - 1)}
@@ -156,7 +147,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                 </button>
               </div>
 
-              {/* Add to Cart Primary Button */}
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
@@ -173,7 +163,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               </button>
             </div>
 
-            {/* Guarantee / Value Badges */}
             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-100 text-center">
               <div className="p-3 bg-slate-50 rounded-xl">
                 <span className="block text-lg mb-1">🚚</span>

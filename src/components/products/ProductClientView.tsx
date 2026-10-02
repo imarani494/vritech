@@ -25,7 +25,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Safely parse active filters from current URL search params
   const filters: FilterState = useMemo(() => {
     const sortParam = searchParams.get('sort');
     const pageParam = parseInt(searchParams.get('page') || '1', 10);
@@ -40,7 +39,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
     };
   }, [searchParams]);
 
-  // Update URL search parameters safely
   const updateQueryParams = useCallback(
     (updates: Partial<FilterState>) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -71,18 +69,15 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
     router.push(pathname, { scroll: false });
   }, [pathname, router]);
 
-  // Perform client-side filtering on server-fetched products dataset
   const filteredProducts = useMemo(() => {
     let result = [...initialProducts];
 
-    // Category filter
     if (filters.category) {
       result = result.filter(
         (p) => p.category.toLowerCase() === filters.category.toLowerCase()
       );
     }
 
-    // Search query filter (title + description, case-insensitive)
     if (filters.search.trim()) {
       const term = filters.search.toLowerCase().trim();
       result = result.filter(
@@ -93,7 +88,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
       );
     }
 
-    // Min price filter
     if (filters.minPrice) {
       const min = parseFloat(filters.minPrice);
       if (!isNaN(min) && min >= 0) {
@@ -101,7 +95,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
       }
     }
 
-    // Max price filter
     if (filters.maxPrice) {
       const max = parseFloat(filters.maxPrice);
       if (!isNaN(max) && max >= 0) {
@@ -109,7 +102,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
       }
     }
 
-    // Client sort safeguard (if server sort parameter was overridden or for instant responsiveness)
     result.sort((a, b) => {
       return filters.sort === 'asc' ? a.price - b.price : b.price - a.price;
     });
@@ -117,7 +109,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
     return result;
   }, [initialProducts, filters]);
 
-  // Calculate pagination slice
   const totalItems = filteredProducts.length;
   const totalPages = Math.ceil(totalItems / PAGE_SIZE) || 1;
   const validCurrentPage = Math.min(filters.page, totalPages);
@@ -129,7 +120,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
 
   return (
     <div>
-      {/* Product Filtering Controls Header */}
       <ProductFilters
         categories={categories}
         filters={filters}
@@ -138,7 +128,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
         totalResults={totalItems}
       />
 
-      {/* Product List Grid or Empty State */}
       {paginatedProducts.length > 0 ? (
         <ProductGrid products={paginatedProducts} />
       ) : (
@@ -150,7 +139,6 @@ export const ProductClientView: React.FC<ProductClientViewProps> = ({
         />
       )}
 
-      {/* Reusable Pagination Navigation */}
       <Pagination
         currentPage={validCurrentPage}
         totalPages={totalPages}
